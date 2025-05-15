@@ -1,0 +1,3 @@
+BveTs Instrument Panel 2.01:gb2312
+
+信息交换用汉字编码字符集基本集

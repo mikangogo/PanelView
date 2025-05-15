@@ -1,0 +1,8 @@
+Version = "PanelViewSettings 1.0"
+
+BaseDirectory = ""
+
+[Window.1]
+PanelFile = "TestPanel1/Panel.txt"
+SettingFile = "TestPanel1/settings.toml"
+BackgroundColorRgb = 0xFFFFFF

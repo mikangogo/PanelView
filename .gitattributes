@@ -1,0 +1,2 @@
+﻿*.sh text encoding=UTF-8 eol=lf
+*.bat text encoding=cp932 text eol=crlf

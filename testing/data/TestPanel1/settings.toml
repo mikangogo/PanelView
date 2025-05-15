@@ -1,0 +1,13 @@
+Version = "PanelViewWindowSettings 1.0"
+
+# This document is AUTO-GENERATED.
+
+[Placement]
+Left = -34
+Right = 1469
+Top = 1745
+Borderless = true
+Bottom = 2868
+Maximized = true
+Topmost = true
+

@@ -1,0 +1,11 @@
+﻿/*
+
+!/.gitignore
+!/.gitattributes
+
+!/*.txt
+!/*.md
+!/Build.*
+/build.*/
+!/src/
+!/testing/
