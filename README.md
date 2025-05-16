@@ -9,6 +9,7 @@ ATSプラグイン形式となっており、Bve本体から呼び出して貰�
 * cmake version 3.31.1
 * Microsoft Visual Studio 2022 Community Edition
 * Microsoft DirectX 9 SDK (June 2010) 
+* Windows SDK 10.0.26100.0
 
 ## ビルド方法
 
@@ -23,10 +24,19 @@ Release ページからダウンロード可能です。
 
 ## プラグインの導入
 
-1. 車両アドオンへ本プラグイン `PanelView.dll` と `panelview.toml` ファイルを配置します。
-1. `panelview.toml` を適切な値で設定し保存します。
-1. 車両アドオン中の「車両ファイル」の `Ats32`, `Ats64` セクションへ本プラグインへのパスを記述します。
-1. 車両を実行します。
+### 前提
+
+* [DirectX 9ランタイム](https://www.microsoft.com/ja-jp/download/details.aspx?id=35)
+* [Microsoft Visual C++ 再頒布可能パッケージ](https://learn.microsoft.com/ja-jp/cpp/windows/latest-supported-vc-redist?view=msvc-170#latest-microsoft-visual-c-redistributable-version)
+* [Windows環境: 対応バージョン](https://developer.microsoft.com/ja-jp/windows/downloads/windows-sdk/#supported-operating-systems)
+
+### 手順
+
+1. 前提を導入し条件を満たす。
+1. 車両アドオンへ本プラグイン `PanelView.dll` と `panelview.toml` ファイルを配置する。
+1. `panelview.toml` を適切な値で設定し保存する。
+1. 車両アドオン中の「車両ファイル」の `Ats32`, `Ats64` セクションへ本プラグインへのパスを記述する。
+1. 路線ファイルから車両アドオンを実行する。
 
 ## プラグインの頒布
 
