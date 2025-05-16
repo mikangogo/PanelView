@@ -3,6 +3,8 @@
 !/.gitignore
 !/.gitattributes
 
+!/Logo.jpg
+
 !/*.txt
 !/*.md
 !/Build.*

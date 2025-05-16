@@ -1,4 +1,8 @@
-﻿## PanelView
+﻿# PanelView
+
+![PanelView ロゴ](./Logo.jpg)
+
+## 概要
 
 Bve Trainsim の運転台を外部のウィンドウに出力するアプリケーションです。
 
@@ -42,8 +46,7 @@ Release ページからダウンロード可能です。
 
 本製品および依存しているライブラリのライセンスの条件に従い、ライセンス表記を掲出する必要があります。
 
-必要に応じて README 等に記載いただくか、本ドキュメントと [LICENSE.md](./LUCENSE.md) を同梱し配布してください。
-
+必要に応じて README 等に記載いただくか、本ドキュメントと [LICENSE.md](./LICENSE.md) を同梱し配布してください。
 
 ## 設定ファイルについて
 
@@ -65,6 +68,10 @@ SettingFile = "panelSettings.toml"          # 運転台パネルウィンドウ�
                                             # 存在しない場合は自動で作成します。
 BackgroundColorRgb = 0xFFFFFF               # 運転台パネルの背景色 (R, G, B)
 ```
+
+## この先に対応を考えていること
+
+[別紙参照](./TODO.md)
 
 ## 使用しているOSSのライセンス表記
 
