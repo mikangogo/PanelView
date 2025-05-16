@@ -34,6 +34,16 @@ Release ページからダウンロード可能です。
 * [Microsoft Visual C++ 再頒布可能パッケージ](https://learn.microsoft.com/ja-jp/cpp/windows/latest-supported-vc-redist?view=msvc-170#latest-microsoft-visual-c-redistributable-version)
 * [Windows環境: 対応バージョン](https://developer.microsoft.com/ja-jp/windows/downloads/windows-sdk/#supported-operating-systems)
 
+### 対応している Bve のバージョン等
+
+* BVE Trainsim 5.8
+* BVE Trainsim 6.0
+* 運転台パネルファイル
+  * BveTs Instrument Panel 2.00
+  * BveTs Instrument Panel 2.01
+
+※運転台パネルファイルのバージョンがこれ以外の場合、ファイルが読み込まれず表示されません。
+
 ### 手順
 
 1. 前提を導入し条件を満たす。
