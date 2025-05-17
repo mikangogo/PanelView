@@ -196,6 +196,52 @@ TEST(PvInstrumentPanelDocumentDataNodeTests, PvInstrumentPanelDocumentDataTypeKe
         EXPECT_DOUBLE_EQ(value.G, 205.0 / 255.0);
         EXPECT_DOUBLE_EQ(value.B, 239.0 / 255.0);
         EXPECT_DOUBLE_EQ(value.A, 1.0);
+
+
+
+
+
+        EXPECT_EQ(value.TryParseFromKeyValue(u8"AaBb", u8"#FFFFFF"), true);
+        EXPECT_DOUBLE_EQ(value.R, 1.0);
+        EXPECT_DOUBLE_EQ(value.G, 1.0);
+        EXPECT_DOUBLE_EQ(value.B, 1.0);
+        EXPECT_DOUBLE_EQ(value.A, 1.0);
+
+        EXPECT_EQ(value.TryParseFromKeyValue(u8"AaBb", u8"#000000"), true);
+        EXPECT_DOUBLE_EQ(value.R, 0.0);
+        EXPECT_DOUBLE_EQ(value.G, 0.0);
+        EXPECT_DOUBLE_EQ(value.B, 0.0);
+        EXPECT_DOUBLE_EQ(value.A, 1.0);
+
+        EXPECT_EQ(value.TryParseFromKeyValue(u8"AaBb", u8"#7F0000"), true);
+        EXPECT_DOUBLE_EQ(value.R, 127.0 / 255.0);
+        EXPECT_DOUBLE_EQ(value.G, 0.0);
+        EXPECT_DOUBLE_EQ(value.B, 0.0);
+        EXPECT_DOUBLE_EQ(value.A, 1.0);
+
+        EXPECT_EQ(value.TryParseFromKeyValue(u8"AaBb", u8"#007F00"), true);
+        EXPECT_DOUBLE_EQ(value.R, 0.0);
+        EXPECT_DOUBLE_EQ(value.G, 127.0 / 255.0);
+        EXPECT_DOUBLE_EQ(value.B, 0.0);
+        EXPECT_DOUBLE_EQ(value.A, 1.0);
+
+        EXPECT_EQ(value.TryParseFromKeyValue(u8"AaBb", u8"#00007F"), true);
+        EXPECT_DOUBLE_EQ(value.R, 0.0);
+        EXPECT_DOUBLE_EQ(value.G, 0.0);
+        EXPECT_DOUBLE_EQ(value.B, 127.0 / 255.0);
+        EXPECT_DOUBLE_EQ(value.A, 1.0);
+
+        EXPECT_EQ(value.TryParseFromKeyValue(u8"AaBb", u8"#605040"), true);
+        EXPECT_DOUBLE_EQ(value.R, 96.0 / 255.0);
+        EXPECT_DOUBLE_EQ(value.G, 80.0 / 255.0);
+        EXPECT_DOUBLE_EQ(value.B, 64.0 / 255.0);
+        EXPECT_DOUBLE_EQ(value.A, 1.0);
+
+        EXPECT_EQ(value.TryParseFromKeyValue(u8"AaBb", u8"#ABCDEF"), true);
+        EXPECT_DOUBLE_EQ(value.R, 171.0 / 255.0);
+        EXPECT_DOUBLE_EQ(value.G, 205.0 / 255.0);
+        EXPECT_DOUBLE_EQ(value.B, 239.0 / 255.0);
+        EXPECT_DOUBLE_EQ(value.A, 1.0);
     }
     ASSERT_NO_THROW(pvPfShutdown());
 }
@@ -273,6 +319,81 @@ TEST(PvInstrumentPanelDocumentDataNodeTests, PvInstrumentPanelDocumentDataTypeKe
         EXPECT_DOUBLE_EQ(value.A, 1.0);
 
         EXPECT_EQ(value.TryParseFromKeyValue(u8"AaBb", u8"FFFFF "), false);
+        EXPECT_DOUBLE_EQ(value.R, 0.0);
+        EXPECT_DOUBLE_EQ(value.G, 0.0);
+        EXPECT_DOUBLE_EQ(value.B, 0.0);
+        EXPECT_DOUBLE_EQ(value.A, 1.0);
+
+
+
+
+        EXPECT_EQ(value.TryParseFromKeyValue(u8"aBb", u8"#FFFFFF"), false);
+        EXPECT_DOUBLE_EQ(value.R, 0.0);
+        EXPECT_DOUBLE_EQ(value.G, 0.0);
+        EXPECT_DOUBLE_EQ(value.B, 0.0);
+        EXPECT_DOUBLE_EQ(value.A, 1.0);
+
+        EXPECT_EQ(value.TryParseFromKeyValue(u8"AaBb", u8"#0"), false);
+        EXPECT_DOUBLE_EQ(value.R, 0.0);
+        EXPECT_DOUBLE_EQ(value.G, 0.0);
+        EXPECT_DOUBLE_EQ(value.B, 0.0);
+        EXPECT_DOUBLE_EQ(value.A, 1.0);
+
+        EXPECT_EQ(value.TryParseFromKeyValue(u8"AaBb", u8"#0862"), false);
+        EXPECT_DOUBLE_EQ(value.R, 0.0);
+        EXPECT_DOUBLE_EQ(value.G, 0.0);
+        EXPECT_DOUBLE_EQ(value.B, 0.0);
+        EXPECT_DOUBLE_EQ(value.A, 1.0);
+
+        EXPECT_EQ(value.TryParseFromKeyValue(u8"AaBb", u8"#523"), false);
+        EXPECT_DOUBLE_EQ(value.R, 0.0);
+        EXPECT_DOUBLE_EQ(value.G, 0.0);
+        EXPECT_DOUBLE_EQ(value.B, 0.0);
+        EXPECT_DOUBLE_EQ(value.A, 1.0);
+
+        EXPECT_EQ(value.TryParseFromKeyValue(u8"AaBb", u8"#94864"), false);
+        EXPECT_DOUBLE_EQ(value.R, 0.0);
+        EXPECT_DOUBLE_EQ(value.G, 0.0);
+        EXPECT_DOUBLE_EQ(value.B, 0.0);
+        EXPECT_DOUBLE_EQ(value.A, 1.0);
+
+        EXPECT_EQ(value.TryParseFromKeyValue(u8"AaBb", u8"#5861589"), false);
+        EXPECT_DOUBLE_EQ(value.R, 0.0);
+        EXPECT_DOUBLE_EQ(value.G, 0.0);
+        EXPECT_DOUBLE_EQ(value.B, 0.0);
+        EXPECT_DOUBLE_EQ(value.A, 1.0);
+
+        EXPECT_EQ(value.TryParseFromKeyValue(u8"AaBb", u8"#84516854"), false);
+        EXPECT_DOUBLE_EQ(value.R, 0.0);
+        EXPECT_DOUBLE_EQ(value.G, 0.0);
+        EXPECT_DOUBLE_EQ(value.B, 0.0);
+        EXPECT_DOUBLE_EQ(value.A, 1.0);
+
+        EXPECT_EQ(value.TryParseFromKeyValue(u8"AaBb", u8"#BCDEFG"), false);
+        EXPECT_DOUBLE_EQ(value.R, 0.0);
+        EXPECT_DOUBLE_EQ(value.G, 0.0);
+        EXPECT_DOUBLE_EQ(value.B, 0.0);
+        EXPECT_DOUBLE_EQ(value.A, 1.0);
+
+        EXPECT_EQ(value.TryParseFromKeyValue(u8"AaBb", u8"#54.248"), false);
+        EXPECT_DOUBLE_EQ(value.R, 0.0);
+        EXPECT_DOUBLE_EQ(value.G, 0.0);
+        EXPECT_DOUBLE_EQ(value.B, 0.0);
+        EXPECT_DOUBLE_EQ(value.A, 1.0);
+
+        EXPECT_EQ(value.TryParseFromKeyValue(u8"AaBb", u8"#FF FFF"), false);
+        EXPECT_DOUBLE_EQ(value.R, 0.0);
+        EXPECT_DOUBLE_EQ(value.G, 0.0);
+        EXPECT_DOUBLE_EQ(value.B, 0.0);
+        EXPECT_DOUBLE_EQ(value.A, 1.0);
+
+        EXPECT_EQ(value.TryParseFromKeyValue(u8"AaBb", u8"# FFFFF"), false);
+        EXPECT_DOUBLE_EQ(value.R, 0.0);
+        EXPECT_DOUBLE_EQ(value.G, 0.0);
+        EXPECT_DOUBLE_EQ(value.B, 0.0);
+        EXPECT_DOUBLE_EQ(value.A, 1.0);
+
+        EXPECT_EQ(value.TryParseFromKeyValue(u8"AaBb", u8"#FFFFF "), false);
         EXPECT_DOUBLE_EQ(value.R, 0.0);
         EXPECT_DOUBLE_EQ(value.G, 0.0);
         EXPECT_DOUBLE_EQ(value.B, 0.0);

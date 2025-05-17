@@ -1,4 +1,8 @@
-﻿## PanelView
+﻿# PanelView
+
+![PanelView ロゴ](./Logo.jpg)
+
+## 概要
 
 Bve Trainsim の運転台を外部のウィンドウに出力するアプリケーションです。
 
@@ -9,6 +13,7 @@ ATSプラグイン形式となっており、Bve本体から呼び出して貰�
 * cmake version 3.31.1
 * Microsoft Visual Studio 2022 Community Edition
 * Microsoft DirectX 9 SDK (June 2010) 
+* Windows SDK 10.0.26100.0
 
 ## ビルド方法
 
@@ -19,21 +24,43 @@ ATSプラグイン形式となっており、Bve本体から呼び出して貰�
 
 ## ビルド済みの成果物について
 
-Release ページからダウンロード可能です。
+[Release](https://github.com/mikangogo/PanelView/releases) ページからダウンロード可能です。
 
 ## プラグインの導入
 
-1. 車両アドオンへ本プラグイン `PanelView.dll` と `panelview.toml` ファイルを配置します。
-1. `panelview.toml` を適切な値で設定し保存します。
-1. 車両アドオン中の「車両ファイル」の `Ats32`, `Ats64` セクションへ本プラグインへのパスを記述します。
-1. 車両を実行します。
+### 前提
+
+* [DirectX 9ランタイム](https://www.microsoft.com/ja-jp/download/details.aspx?id=35)
+* [Microsoft Visual C++ 再頒布可能パッケージ](https://learn.microsoft.com/ja-jp/cpp/windows/latest-supported-vc-redist?view=msvc-170#latest-microsoft-visual-c-redistributable-version)
+* [Windows環境: 対応バージョン](https://developer.microsoft.com/ja-jp/windows/downloads/windows-sdk/#supported-operating-systems)
+
+### 対応している Bve のバージョン等
+
+* BVE Trainsim 5.8
+* BVE Trainsim 6.0
+* 運転台パネルファイル
+  * Version 1.0
+  * BveTs Instrument Panel 2.00
+  * BveTs Instrument Panel 2.01
+
+### 仕様上の動作の制約
+
+1. 運転台パネルファイルのバージョンが上記以外の場合、ファイルが読み込まれず表示されません。
+1. Bve本体がフルスクリーンモードの場合、グラフィクスデバイスを排他で使用してしまうため表示されません。
+
+### 手順
+
+1. 前提を導入し条件を満たす。
+1. 車両アドオンへ本プラグイン `PanelView.dll` と `panelview.toml` ファイルを配置する。
+1. `panelview.toml` を適切な値で設定し保存する。
+1. 車両アドオン中の「車両ファイル」の `Ats32`, `Ats64` セクションへ本プラグインへのパスを記述する。
+1. 路線ファイルから車両アドオンを実行する。
 
 ## プラグインの頒布
 
 本製品および依存しているライブラリのライセンスの条件に従い、ライセンス表記を掲出する必要があります。
 
-必要に応じて README 等に記載いただくか、本ドキュメントと [LICENSE.md](./LUCENSE.md) を同梱し配布してください。
-
+必要に応じて README 等に記載いただくか、本ドキュメントと [LICENSE.md](./LICENSE.md) を同梱し配布してください。
 
 ## 設定ファイルについて
 
@@ -55,6 +82,10 @@ SettingFile = "panelSettings.toml"          # 運転台パネルウィンドウ�
                                             # 存在しない場合は自動で作成します。
 BackgroundColorRgb = 0xFFFFFF               # 運転台パネルの背景色 (R, G, B)
 ```
+
+## この先に対応を考えていること
+
+[別紙参照](./TODO.md)
 
 ## 使用しているOSSのライセンス表記
 

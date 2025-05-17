@@ -218,6 +218,10 @@ protected:
     }
 
 public:
+    PvInstrumentPanelDocumentDataTypeKeyValuePair_Value(double value = 0.0) : Value(value)
+    {
+    }
+
     double Value = 0.0;
 };
 
@@ -378,17 +382,34 @@ protected:
     {
         std::u8string str(value);
 
-        if (str.length() != 6)
+        if (str.length() < 6 || str.length() > 7)
         {
             return false;
         }
 
-        // (u8"000000".length() == 6)
+        if (str.length() == 6 && str[0] == u8'#')
+        {
+            return false;
+        }
+
+        if (str.length() == 7 && str[0] != u8'#')
+        {
+            return false;
+        }
+
+        // (u8"000000".length() == 6) && (str[0] != u8'#')
+        // (u8"#000000".length() == 7) && (str[0] == u8'#')
 
         // https://timsong-cpp.github.io/cppwp/n4861/basic.string#3
         auto begin = reinterpret_cast<const char*>(str.data());
         auto end = reinterpret_cast<const char*>(str.data() + str.length());
         int hexColorRgb = 0;
+
+        if (begin[0] == '#')
+        {
+            begin += 1;
+        }
+
         auto convResult = std::from_chars(begin, end, hexColorRgb, 16);
 
         if (convResult.ptr != end)
@@ -674,8 +695,8 @@ public:
     PvInstrumentPanelDocumentDataTypeKeyValuePair_Value<u8"Maximum"> Maximum;
     PvInstrumentPanelDocumentDataTypeKeyValuePair_Angle<u8"Tilt", 2> Tilt;
     PvInstrumentPanelDocumentDataTypeKeyValuePair_Flag<u8"StopPin"> StopPin;
-    PvInstrumentPanelDocumentDataTypeKeyValuePair_Value<u8"NaturalFreq"> NaturalFreq;
-    PvInstrumentPanelDocumentDataTypeKeyValuePair_Value<u8"DampingRatio"> DampingRatio;
+    PvInstrumentPanelDocumentDataTypeKeyValuePair_Value<u8"NaturalFreq"> NaturalFreq = PvInstrumentPanelDocumentDataTypeKeyValuePair_Value<u8"NaturalFreq">(1.0);
+    PvInstrumentPanelDocumentDataTypeKeyValuePair_Value<u8"DampingRatio"> DampingRatio = PvInstrumentPanelDocumentDataTypeKeyValuePair_Value<u8"DampingRatio">(1.0);
 };
 
 struct PvInstrumentPanelDocumentDataNode_DigitalGauge
