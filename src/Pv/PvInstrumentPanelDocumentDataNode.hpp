@@ -218,6 +218,10 @@ protected:
     }
 
 public:
+    PvInstrumentPanelDocumentDataTypeKeyValuePair_Value(double value = 0.0) : Value(value)
+    {
+    }
+
     double Value = 0.0;
 };
 
@@ -674,8 +678,8 @@ public:
     PvInstrumentPanelDocumentDataTypeKeyValuePair_Value<u8"Maximum"> Maximum;
     PvInstrumentPanelDocumentDataTypeKeyValuePair_Angle<u8"Tilt", 2> Tilt;
     PvInstrumentPanelDocumentDataTypeKeyValuePair_Flag<u8"StopPin"> StopPin;
-    PvInstrumentPanelDocumentDataTypeKeyValuePair_Value<u8"NaturalFreq"> NaturalFreq;
-    PvInstrumentPanelDocumentDataTypeKeyValuePair_Value<u8"DampingRatio"> DampingRatio;
+    PvInstrumentPanelDocumentDataTypeKeyValuePair_Value<u8"NaturalFreq"> NaturalFreq = PvInstrumentPanelDocumentDataTypeKeyValuePair_Value<u8"NaturalFreq">(1.0);
+    PvInstrumentPanelDocumentDataTypeKeyValuePair_Value<u8"DampingRatio"> DampingRatio = PvInstrumentPanelDocumentDataTypeKeyValuePair_Value<u8"DampingRatio">(1.0);
 };
 
 struct PvInstrumentPanelDocumentDataNode_DigitalGauge
