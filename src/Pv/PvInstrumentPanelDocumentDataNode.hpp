@@ -382,17 +382,34 @@ protected:
     {
         std::u8string str(value);
 
-        if (str.length() != 6)
+        if (str.length() < 6 || str.length() > 7)
         {
             return false;
         }
 
-        // (u8"000000".length() == 6)
+        if (str.length() == 6 && str[0] == u8'#')
+        {
+            return false;
+        }
+
+        if (str.length() == 7 && str[0] != u8'#')
+        {
+            return false;
+        }
+
+        // (u8"000000".length() == 6) && (str[0] != u8'#')
+        // (u8"#000000".length() == 7) && (str[0] == u8'#')
 
         // https://timsong-cpp.github.io/cppwp/n4861/basic.string#3
         auto begin = reinterpret_cast<const char*>(str.data());
         auto end = reinterpret_cast<const char*>(str.data() + str.length());
         int hexColorRgb = 0;
+
+        if (begin[0] == '#')
+        {
+            begin += 1;
+        }
+
         auto convResult = std::from_chars(begin, end, hexColorRgb, 16);
 
         if (convResult.ptr != end)

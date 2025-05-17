@@ -29,7 +29,8 @@ namespace
     enum PvDocumentVersion
     {
         PvDocumentVersion_Invalid = -1,
-        PvDocumentVersion_2_00 = 0,
+        PvDocumentVersion_1_00 = 0,
+        PvDocumentVersion_2_00,
         PvDocumentVersion_2_01,
     };
 
@@ -48,28 +49,34 @@ namespace
     PvDocumentVersion DetectHeaderVersion(std::string_view versionString)
     {
         std::match_results<std::string_view::const_iterator> match;
-        std::regex pattern(R"(\d\.\d+)");
+        std::regex pattern(R"(version 1.0)", std::regex_constants::ECMAScript | std::regex_constants::icase);
         auto begin = versionString.begin();
         auto end = versionString.end();
 
-        if (!std::regex_search(begin, end, match, pattern))
+        // Find "Version 1.0" the oldest header declaration.
+        if (std::regex_search(begin, end, match, pattern))
         {
-            // Version string is nothing.
-            return PvDocumentVersion_Invalid;
+            // Version 1.0
+            return PvDocumentVersion_1_00;
         }
 
+
+        pattern.assign(R"(\d\.\d+)");
 
         PvDocumentVersion version = PvDocumentVersion_Invalid;
 
-        if (match.str() == "2.00")
+        if (std::regex_search(begin, end, match, pattern))
         {
-            // 2.00
-            version = PvDocumentVersion_2_00;
-        }
-        else if (match.str() == "2.01")
-        {
-            // 2.01
-            version = PvDocumentVersion_2_01;
+            if (match.str() == "2.00")
+            {
+                // 2.00
+                version = PvDocumentVersion_2_00;
+            }
+            else if (match.str() == "2.01")
+            {
+                // 2.01
+                version = PvDocumentVersion_2_01;
+            }
         }
 
         return version;
@@ -88,7 +95,7 @@ namespace
 
 
         // Find "BveTs Instrument Panel X.YY:zzzz".
-        std::regex pattern(R"(BveTs Instrument Panel \d\.\d+:.+)");
+        std::regex pattern(R"(BveTs Instrument Panel \d\.\d+:.+)", std::regex_constants::ECMAScript | std::regex_constants::icase);
         std::match_results<std::string_view::const_iterator> match;
 
         do
@@ -97,14 +104,22 @@ namespace
             {
                 // Find "BveTs Instrument Panel X.YY".
                 // If the encoding is not specified, it shall be regarded as UTF-8.
-                pattern.assign(R"(BveTs Instrument Panel \d\.\d+)");
+                pattern.assign(R"(BveTs Instrument Panel \d\.\d+)", std::regex_constants::ECMAScript | std::regex_constants::icase);
 
 
                 if (!std::regex_search(begin, end, match, pattern))
                 {
-                    // No such header description.
-                    // Fail.
-                    break;
+                    // Find "Version 1.0" the oldest declaration.
+                    // If the encoding is not specified, it shall be regarded as UTF-8.
+                    pattern.assign(R"(version 1.0)", std::regex_constants::ECMAScript | std::regex_constants::icase);
+
+
+                    if (!std::regex_search(begin, end, match, pattern))
+                    {
+                        // No such header description.
+                        // Fail.
+                        break;
+                    }
                 }
 
 
@@ -154,12 +169,7 @@ namespace
         }
 
         
-        pattern.assign(R"(\d\.\d+)");
-
-        if (std::regex_search(begin, end, match, pattern))
-        {
-            headerInfo.Version = DetectHeaderVersion(match.str());
-        }
+        headerInfo.Version = DetectHeaderVersion(str);
         
 
         if (headerOffset)
@@ -282,7 +292,7 @@ namespace
         return result;
     }
 
-    bool ParseHeader(const PvPfFileInfo& fileInfo, std::unique_ptr<char8_t[]>& generatedDocument, size_t& generatedDocumentLength, std::u8string_view& generatedDocumentBody, const PvLogHandlerParser& logger)
+    bool ParseHeader(const PvPfFileInfo& fileInfo, HeaderInfo& parsedHeaderInfo, std::unique_ptr<char8_t[]>& generatedDocument, size_t& generatedDocumentLength, std::u8string_view& generatedDocumentBody, const PvLogHandlerParser& logger)
     {
         auto sourceData = reinterpret_cast<const char*>(fileInfo.GetData().data());
         auto sourceDataBytes = fileInfo.GetData().size_bytes();
@@ -548,10 +558,12 @@ namespace
 
         generatedDocumentBody = std::u8string_view(documentBody, documentBodyLength);
 
+        parsedHeaderInfo = headerInfo;
+
         return true;
     }
 
-    void ParseDocument(std::u8string_view body, PvInstrumentPanelDocument& target)
+    void ParseDocument(std::u8string_view body, PvInstrumentPanelDocument& target, PvDocumentVersion documentVersion)
     {
         {
             auto crLf = 0;
@@ -624,7 +636,25 @@ namespace
                         for (std::u8string_view::size_type ii = 0; ii < count; ++ii)
                         {
                             auto chr = lineBegin[ii];
-                            if (chr == u8'#' || chr == u8';')
+                            auto commentDelimFound = false;
+                            
+                            switch (documentVersion)
+                            {
+                            case PvDocumentVersion_1_00:
+                                if (chr == u8';')
+                                {
+                                    commentDelimFound = true;
+                                }
+                                break;
+                            default:
+                                if (chr == u8'#' || chr == u8';')
+                                {
+                                    commentDelimFound = true;
+                                }
+                                break;
+                            }
+
+                            if (commentDelimFound)
                             {
                                 lineEnd = lineBegin + ii;
                                 count = lineEnd - lineBegin;
@@ -778,7 +808,9 @@ bool PvInstrumentPanelDocument::LoadFromFile(const PvPfFileInfo& fileInfo, PvIns
     parserLogger.SetDocumentPath(documentPath);
 
 
-    if (!ParseHeader(fileInfo, document._documentData, document._documentDataLength, document._documentBody, parserLogger))
+    HeaderInfo headerInfo;
+
+    if (!ParseHeader(fileInfo, headerInfo, document._documentData, document._documentDataLength, document._documentBody, parserLogger))
     {
         // Failed parsing header.
         // Abort.
@@ -790,7 +822,7 @@ bool PvInstrumentPanelDocument::LoadFromFile(const PvPfFileInfo& fileInfo, PvIns
 
     auto body = document.GetDocumentBody();
 
-    ParseDocument(body, document);
+    ParseDocument(body, document, headerInfo.Version);
 
     document._documentPath = documentPath;
 
