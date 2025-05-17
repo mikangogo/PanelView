@@ -24,7 +24,7 @@ ATSプラグイン形式となっており、Bve本体から呼び出して貰�
 
 ## ビルド済みの成果物について
 
-Release ページからダウンロード可能です。
+[Release](https://github.com/mikangogo/PanelView/releases) ページからダウンロード可能です。
 
 ## プラグインの導入
 
@@ -39,6 +39,7 @@ Release ページからダウンロード可能です。
 * BVE Trainsim 5.8
 * BVE Trainsim 6.0
 * 運転台パネルファイル
+  * Version 1.0
   * BveTs Instrument Panel 2.00
   * BveTs Instrument Panel 2.01
 
