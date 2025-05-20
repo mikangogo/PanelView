@@ -147,7 +147,9 @@ extern void pvPfIoClose(PvPfFileInfo& fileInfo);
 extern size_t pvPfCccUtf8ToUtf16(char16_t* convertedBuffer, const size_t bufLength, const char8_t* source, const size_t sourceLength);
 extern size_t pvPfCccMultiByteToUtf16(char16_t* convertedBuffer, const size_t bufLength, const char* source, const size_t sourceLength, const unsigned int codePage);
 extern size_t pvPfCccUtf16ToUtf8(char8_t* convertedBuffer, size_t bufLength, const char16_t* source, const size_t sourceLength);
+extern size_t pvPfCccUtf16ToMultiByte(char* convertedBuffer, size_t bufLength, const char16_t* source, const size_t sourceLength, const unsigned int codePage);
 extern size_t pvPfCccMultiByteToUtf8(char8_t* convertedBuffer, size_t bufLength, const char* source, const size_t sourceLength, const unsigned int codePage);
+extern size_t pvPfCccUtf8ToMultiByte(char* convertedBuffer, size_t bufLength, const char8_t* source, const size_t sourceLength, const unsigned int codePage);
 extern unsigned int pvPfCccGetCodePageFromName(const char8_t* codePageName);
 
 extern PvPfWindowHandle pvPfCreateWindow(const char8_t* windowTitle, PvPfWindowEventOperator& eventInfo);
