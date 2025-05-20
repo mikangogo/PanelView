@@ -126,6 +126,106 @@ TEST(PvPfCcc_Windows, pvPfCccUtf8ToUtf16_invalid_operation)
     ASSERT_NO_THROW(pvPfShutdown());
 }
 
+TEST(PvPfCcc_Windows, pvPfCccUtf16ToUtf8_correct)
+{
+    ASSERT_NO_THROW(pvPfInitialize(ApplicationInstance));
+    {
+        const char8_t* u8expected = u8"あいうえお𠮷今晩わ💕";
+        const auto u8expectedLength = strnlen_s(reinterpret_cast<char const*>(u8expected), 128);
+        const char16_t* u16str = u"あいうえお𠮷今晩わ💕";
+        const auto u16strLength = wcsnlen_s(reinterpret_cast<wchar_t const*>(u16str), 128);
+        constexpr auto u8strLength = 128;
+        std::unique_ptr<char8_t[]> u8str = std::make_unique<char8_t[]>(u8strLength);
+
+        EXPECT_EQ(pvPfCccUtf16ToUtf8(u8str.get(), u8strLength, u16str, u16strLength), u8expectedLength + 1);
+        EXPECT_EQ(strncmp(reinterpret_cast<char const*>(u8expected), reinterpret_cast<const char*>(u8str.get()),
+            u8strLength),
+            0);
+    }
+    {
+        const char8_t* u8expected = u8"あいうえお𠮷今晩わ💕";
+        const auto u8expectedLength = strnlen_s(reinterpret_cast<char const*>(u8expected), 128);
+        const char16_t* u16str = u"あいうえお𠮷今晩わ💕";
+        const auto u16strLength = wcsnlen_s(reinterpret_cast<wchar_t const*>(u16str), 128);
+
+        constexpr auto u8strLength = 128;
+        std::unique_ptr<char8_t[]> u8str = std::make_unique<char8_t[]>(u8strLength);
+        auto u8char = u8str[0];
+
+        EXPECT_EQ(pvPfCccUtf16ToUtf8(nullptr, u8strLength, u16str, u16strLength), u8expectedLength + 1);
+        EXPECT_EQ(pvPfCccUtf16ToUtf8(u8str.get(), 0, u16str, u16strLength), u8expectedLength + 1);
+        EXPECT_EQ(u8str[0] == u8char, true);
+    }
+    {
+        const char8_t* u8expected = u8"";
+        const auto u8expectedLength = strnlen_s(reinterpret_cast<char const*>(u8expected), 128);
+        const char16_t* u16str = u"";
+        const auto u16strLength = wcsnlen_s(reinterpret_cast<wchar_t const*>(u16str), 128);
+        constexpr auto u8strLength = 128;
+        std::unique_ptr<char8_t[]> u8str = std::make_unique<char8_t[]>(u8strLength);
+
+        EXPECT_EQ(pvPfCccUtf16ToUtf8(u8str.get(), u8strLength, u16str, u8strLength), u8expectedLength);
+        EXPECT_EQ(strncmp(reinterpret_cast<char const*>(u8expected), reinterpret_cast<const char*>(u8str.get()),
+            u8strLength),
+            0);
+    }
+    ASSERT_NO_THROW(pvPfShutdown());
+}
+
+TEST(PvPfCcc_Windows, pvPfCccUtf16ToUtf8_u16_dest_buffer_too_small)
+{
+    ASSERT_NO_THROW(pvPfInitialize(ApplicationInstance));
+
+    const char16_t* u16str = u"あいうえお𠮷今晩わ💕";
+    const auto u16strLength = wcsnlen_s(reinterpret_cast<wchar_t const*>(u16str), 128);
+    constexpr auto u8strLength = 4;
+    std::unique_ptr<char8_t[]> u8str = std::make_unique<char8_t[]>(u8strLength);
+
+    EXPECT_EQ(pvPfCccUtf16ToUtf8(u8str.get(), u8strLength, u16str, u16strLength), 0);
+    ASSERT_NO_THROW(pvPfShutdown());
+}
+
+TEST(PvPfCcc_Windows, pvPfCccUtf16ToUtf8_invalid_operation)
+{
+    ASSERT_NO_THROW(pvPfInitialize(ApplicationInstance));
+    {
+        const char16_t* u16str = u"あいうえお𠮷今晩わ💕";
+        const auto u16strLength = wcsnlen_s(reinterpret_cast<wchar_t const*>(u16str), 128);
+        constexpr auto u8strLength = 128;
+        std::unique_ptr<char8_t[]> u8str = std::make_unique<char8_t[]>(u8strLength);
+
+        EXPECT_EQ(pvPfCccUtf16ToUtf8(u8str.get(), u8strLength, nullptr, u16strLength), 0);
+    }
+    {
+        const char16_t* u16str = u"あいうえお𠮷今晩わ💕";
+        constexpr auto u8strLength = 128;
+        std::unique_ptr<char8_t[]> u8str = std::make_unique<char8_t[]>(u8strLength);
+
+        EXPECT_EQ(pvPfCccUtf16ToUtf8(u8str.get(), u8strLength, u16str, 0), 0);
+    }
+
+    ASSERT_NO_THROW(pvPfShutdown());
+}
+
+TEST(PvPfCcc_Windows, pvPfCccUtf16ToMultiBytes_correct)
+{
+    ASSERT_NO_THROW(pvPfInitialize(ApplicationInstance));
+    {
+        const char* mbexpected = "あいうえお𠮷今晩わ💕";
+        const auto mbexpectedLength = strnlen_s(reinterpret_cast<char const*>(mbexpected), 128);
+        const char16_t* u16str = u"あいうえお𠮷今晩わ💕";
+        const auto u16strLength = wcsnlen_s(reinterpret_cast<wchar_t const*>(u16str), 128);
+        constexpr auto mbstrLength = 128;
+        std::unique_ptr<char[]> mbstr = std::make_unique<char[]>(mbstrLength);
+
+        EXPECT_EQ(pvPfCccUtf16ToMultiByte(mbstr.get(), mbstrLength, u16str, u16strLength, CP_ACP), mbexpectedLength + 1);
+        EXPECT_EQ(strncmp(mbexpected, mbstr.get(),
+            mbstrLength),
+            0);
+    }
+    ASSERT_NO_THROW(pvPfShutdown());
+}
+
 TEST(PvPfCcc_Windows, pvPfCccMultiByteToUtf8_sjis_correct)
 {
     ASSERT_NO_THROW(pvPfInitialize(ApplicationInstance));

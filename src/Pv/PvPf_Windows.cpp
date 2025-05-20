@@ -880,6 +880,11 @@ RETURNS_LENGTH:
 
 size_t pvPfCccUtf16ToUtf8(char8_t* convertedBuffer, size_t bufLength, const char16_t* source, const size_t sourceLength)
 {
+    return pvPfCccUtf16ToMultiByte(reinterpret_cast<char*>(convertedBuffer), bufLength, source, sourceLength, CP_UTF8);
+}
+
+size_t pvPfCccUtf16ToMultiByte(char* convertedBuffer, size_t bufLength, const char16_t* source, const size_t sourceLength, const unsigned int codePage)
+{
     if (!source || !sourceLength)
     {
         // Invalid arguments.
@@ -887,13 +892,13 @@ size_t pvPfCccUtf16ToUtf8(char8_t* convertedBuffer, size_t bufLength, const char
     }
 
 
-    auto flags = WC_ERR_INVALID_CHARS;
+    auto flags = codePage == CP_UTF8 || codePage == 54936U ? WC_ERR_INVALID_CHARS : 0U;
     auto src = reinterpret_cast<const wchar_t*>(source);
     auto srcLengthWithoutNullChar = wcsnlen_s(src, sourceLength);
-    auto cnvd = reinterpret_cast<char*>(convertedBuffer);
+    auto cnvd = convertedBuffer;
 
 
-    auto mbcsLength = static_cast<size_t>(WideCharToMultiByte(CP_UTF8, flags, src, static_cast<int>(srcLengthWithoutNullChar), nullptr, 0, nullptr, nullptr));
+    auto mbcsLength = static_cast<size_t>(WideCharToMultiByte(codePage, flags, src, static_cast<int>(srcLengthWithoutNullChar), nullptr, 0, nullptr, nullptr));
 
     if (!mbcsLength)
     {
@@ -915,7 +920,7 @@ size_t pvPfCccUtf16ToUtf8(char8_t* convertedBuffer, size_t bufLength, const char
         return 0;
     }
 
-    if (!WideCharToMultiByte(CP_UTF8, flags, src, static_cast<int>(srcLengthWithoutNullChar), cnvd, static_cast<int>(mbcsLength), nullptr, nullptr))
+    if (!WideCharToMultiByte(codePage, flags, src, static_cast<int>(srcLengthWithoutNullChar), cnvd, static_cast<int>(mbcsLength), nullptr, nullptr))
     {
         return 0;
     }
@@ -951,6 +956,30 @@ size_t pvPfCccMultiByteToUtf8(char8_t* convertedBuffer, size_t bufLength, const 
 
 
     return pvPfCccUtf16ToUtf8(convertedBuffer, bufLength, convertedUtf16Buffer.get(), desiredUtf16BufferLength);
+}
+
+size_t pvPfCccUtf8ToMultiByte(char* convertedBuffer, size_t bufLength, const char8_t* source, const size_t sourceLength,
+    const unsigned int codePage)
+{
+    std::unique_ptr<char16_t[]> convertedUtf16Buffer;
+    size_t desiredUtf16BufferLength = pvPfCccUtf8ToUtf16(nullptr, 0, source, sourceLength);
+
+
+    if (!desiredUtf16BufferLength)
+    {
+        return 0;
+    }
+
+
+    convertedUtf16Buffer = std::make_unique<char16_t[]>(desiredUtf16BufferLength);
+
+    if (!pvPfCccUtf8ToUtf16(convertedUtf16Buffer.get(), desiredUtf16BufferLength, source, sourceLength))
+    {
+        return 0;
+    }
+
+
+    return pvPfCccUtf16ToMultiByte(convertedBuffer, bufLength, convertedUtf16Buffer.get(), desiredUtf16BufferLength, codePage);
 }
 
 unsigned int pvPfCccGetCodePageFromName(const char8_t* codePageName)
@@ -1047,10 +1076,10 @@ void pvPfThrowException(const std::string& message)
 void pvPfDebugPrintLine(const std::u8string& message)
 {
     auto buf = u8"[PV]: " + message;
-    auto u16Length = pvPfCccUtf8ToUtf16(nullptr, 0, buf.c_str(), buf.length());
-    auto u16Buf = std::make_unique<char16_t[]>(u16Length);
-    pvPfCccUtf8ToUtf16(u16Buf.get(), u16Length, buf.c_str(), buf.length());
-    std::wcout << reinterpret_cast<LPCWSTR>(u16Buf.get()) << L"\n";
+    auto mbLength = pvPfCccUtf8ToMultiByte(nullptr, 0, buf.c_str(), buf.length(), CP_ACP);
+    auto mbBuf = std::make_unique<char[]>(mbLength);
+    pvPfCccUtf8ToMultiByte(mbBuf.get(), mbLength, buf.c_str(), buf.length(), CP_ACP);
+    std::cout << mbBuf.get() << "\n";
 }
 
 void pvPfDebugPrintLine(const std::string& message)
