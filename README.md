@@ -151,3 +151,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ## 本製品のライセンスについて
 
 本製品は [MIT License](./LICENSE.md) の条件に基づいてライセンスされています。
+
+参考: [オープンソースライセンスの日本語参考訳 - MITライセンス](https://licenses.opensource.jp/MIT/MIT.html)
+
+## 本製品の商用利用、運転会への利用等について
+
+[本製品のライセンスについて](#本製品のライセンスについて) に従い、利用頂けます。
+
+連絡不要です。
