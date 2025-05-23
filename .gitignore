@@ -3,6 +3,8 @@
 !/.gitignore
 !/.gitattributes
 
+!/.github
+
 !/Logo.jpg
 
 !/*.txt
