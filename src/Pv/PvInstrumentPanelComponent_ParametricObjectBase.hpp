@@ -19,6 +19,7 @@ public:
 protected:
     static int GetDigitValue(const int sourceValue, const int digit)
     {
+        constexpr auto AltValue = 10;
         auto value = 0;
 
         switch (digit)
@@ -27,10 +28,16 @@ protected:
                 value = sourceValue % 10;
                 break;
             case 1:
-                value = (sourceValue / 10) % 10;
+                {
+                    const auto n = sourceValue / 10;
+                    value = n > 0 ? (n % 10) : AltValue;
+                }
                 break;
             case 2:
-                value = (sourceValue / 100) % 10;
+                {
+                    const auto n = sourceValue / 100;
+                    value = n > 0 ? (n % 10) : AltValue;
+                }
                 break;
             default:
                 break;
