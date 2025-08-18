@@ -366,6 +366,7 @@ namespace
             // BOM is UTF-8.
 
             codePage = pvPfCccGetCodePageFromName(u8"utf-8");
+            unicodeEncoding = PvDocumentUnicodeEncoding_Utf8;
             stride = sizeof(char8_t);
 
             logger.PrintParseHeaderMessage(PvLogHandlerParser::HeaderReason_Information, u8"BOM: UTF-8");
@@ -374,6 +375,7 @@ namespace
             // BOM is UTF-16LE.
 
             codePage = pvPfCccGetCodePageFromName(u8"utf-16");
+            unicodeEncoding = PvDocumentUnicodeEncoding_Utf16Le;
             stride = sizeof(char16_t);
 
             logger.PrintParseHeaderMessage(PvLogHandlerParser::HeaderReason_Information, u8"BOM: UTF-16LE");
@@ -382,6 +384,7 @@ namespace
             // BOM is UTF-16BE.
 
             codePage = pvPfCccGetCodePageFromName(u8"unicodeFFFE");
+            unicodeEncoding = PvDocumentUnicodeEncoding_Utf16Be;
             stride = sizeof(char16_t);
 
             logger.PrintParseHeaderMessage(PvLogHandlerParser::HeaderReason_Information, u8"BOM: UTF-16BE");
@@ -534,11 +537,9 @@ namespace
         if (codePage != headerInfo.CodePage)
         {
             // Encoding specifier and BOM 
-            // Fail.
+            // Warning.
 
-            logger.PrintParseHeaderMessage(PvLogHandlerParser::HeaderReason_InvalidEncoding, std::format("No consistency encoding: BOM is CP{:d}, but specifier is CP{:d}.", codePage, headerInfo.CodePage));
-
-            return false;
+            logger.PrintParseHeaderMessage(PvLogHandlerParser::HeaderReason_InvalidEncoding, std::format("No consistency encoding: BOM is CP{:d}, but specifier is CP{:d}. Use BOM encoding.", codePage, headerInfo.CodePage));
         }
         if (headerInfo.Version == PvDocumentVersion_Invalid)
         {
