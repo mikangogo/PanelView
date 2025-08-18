@@ -425,6 +425,8 @@ protected:
         G = std::clamp(G, 0.0, 1.0);
         R = std::clamp(R, 0.0, 1.0);
 
+        A = 1.0;
+
         return true;
     }
 
@@ -615,7 +617,7 @@ public:
     PvInstrumentPanelDocumentDataTypeKeyValuePair_Value<u8"Bottom"> Bottom;
     PvInstrumentPanelDocumentDataTypeKeyValuePair_Path<u8"DaytimeImage"> DaytimeImage;
     PvInstrumentPanelDocumentDataTypeKeyValuePair_Path<u8"NighttimeImage"> NighttimeImage;
-    PvInstrumentPanelDocumentDataTypeKeyValuePair_Color<u8"TransparentColor"> TransparentColor;
+    PvInstrumentPanelDocumentDataTypeKeyValuePair_Color<u8"TransparentColor"> TransparentColor = PvInstrumentPanelDocumentDataTypeKeyValuePair_Color<u8"TransparentColor">(0.0, 0.0, 0.0, 0.0);
     PvInstrumentPanelDocumentDataTypeKeyValuePair_ValueArray<u8"Center", 2> Center;
     PvInstrumentPanelDocumentDataTypeKeyValuePair_ValueArray<u8"Origin", 2> Origin;
     PvInstrumentPanelDocumentDataTypeKeyValuePair_Value<u8"Perspective"> Perspective;
@@ -645,7 +647,7 @@ public:
     PvInstrumentPanelDocumentDataTypeKeyValuePair_ValueArray<u8"Location", 2> Location;
     PvInstrumentPanelDocumentDataTypeKeyValuePair_Path<u8"DaytimeImage"> DaytimeImage;
     PvInstrumentPanelDocumentDataTypeKeyValuePair_Path<u8"NighttimeImage"> NighttimeImage;
-    PvInstrumentPanelDocumentDataTypeKeyValuePair_Color<u8"TransparentColor"> TransparentColor;
+    PvInstrumentPanelDocumentDataTypeKeyValuePair_Color<u8"TransparentColor"> TransparentColor = PvInstrumentPanelDocumentDataTypeKeyValuePair_Color<u8"TransparentColor">(0.0, 0.0, 0.0, 0.0);
     PvInstrumentPanelDocumentDataTypeKeyValuePair_RenderingOrder<u8"Layer"> Layer;
 };
 
@@ -685,7 +687,7 @@ public:
     PvInstrumentPanelDocumentDataTypeKeyValuePair_Path<u8"DaytimeImage"> DaytimeImage;
     PvInstrumentPanelDocumentDataTypeKeyValuePair_Path<u8"NighttimeImage"> NighttimeImage;
     PvInstrumentPanelDocumentDataTypeKeyValuePair_Color<u8"Color"> Color = PvInstrumentPanelDocumentDataTypeKeyValuePair_Color<u8"Color">(1.0,1.0,1.0,1.0);
-    PvInstrumentPanelDocumentDataTypeKeyValuePair_Color<u8"TransparentColor"> TransparentColor;
+    PvInstrumentPanelDocumentDataTypeKeyValuePair_Color<u8"TransparentColor"> TransparentColor = PvInstrumentPanelDocumentDataTypeKeyValuePair_Color<u8"TransparentColor">(0.0, 0.0, 0.0, 0.0);
     PvInstrumentPanelDocumentDataTypeKeyValuePair_ValueArray<u8"Origin", 2> Origin;
     PvInstrumentPanelDocumentDataTypeKeyValuePair_RenderingOrder<u8"Layer"> Layer;
     PvInstrumentPanelDocumentDataTypeKeyValuePair_Value<u8"Radius"> Radius;
@@ -762,7 +764,7 @@ public:
     PvInstrumentPanelDocumentDataTypeKeyValuePair_ValueArray<u8"Location", 2> Location;
     PvInstrumentPanelDocumentDataTypeKeyValuePair_Path<u8"DaytimeImage"> DaytimeImage;
     PvInstrumentPanelDocumentDataTypeKeyValuePair_Path<u8"NighttimeImage"> NighttimeImage;
-    PvInstrumentPanelDocumentDataTypeKeyValuePair_Color<u8"TransparentColor"> TransparentColor;
+    PvInstrumentPanelDocumentDataTypeKeyValuePair_Color<u8"TransparentColor"> TransparentColor = PvInstrumentPanelDocumentDataTypeKeyValuePair_Color<u8"TransparentColor">(0.0, 0.0, 0.0, 0.0);
     PvInstrumentPanelDocumentDataTypeKeyValuePair_RenderingOrder<u8"Layer"> Layer;
     PvInstrumentPanelDocumentDataTypeKeyValuePair_Value<u8"Interval"> Interval;
 };
