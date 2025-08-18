@@ -74,6 +74,12 @@ target_include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
+configure_file(
+  ${CMAKE_SOURCE_DIR}/Resharper.DotSettings
+  ${CMAKE_BINARY_DIR}/${BVETS_LIBRARY_NAME}.sln.DotSettings
+  COPYONLY
+)
+
 if (PV_TESTING)
     enable_testing()
     add_subdirectory(testing)

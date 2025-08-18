@@ -179,3 +179,93 @@ TEST(PvInstrumentPanelDocumentTests, PvInstrumentPanelDocument_parse_utf8_bom_lf
     ASSERT_NO_THROW(pvGrShutdown());
     ASSERT_NO_THROW(pvPfShutdown());
 }
+
+TEST(PvInstrumentPanelDocumentTests, PvInstrumentPanelDocument_Create_utf16_crlf_signature_utf8_correct)
+{
+    ASSERT_NO_THROW(pvPfInitialize(ApplicationInstance));
+    {
+        PvInstrumentPanelDocument pviDoc;
+        PvPfFileInfo fileInfo;
+
+        ASSERT_NO_THROW(ASSERT_EQ(pvPfIoOpen(u8"..\\..\\..\\testing\\data\\panel_utf16_crlf_signature_utf8.txt", fileInfo), true));
+        ASSERT_NO_THROW(ASSERT_EQ(pvPfIoRead(fileInfo), true));
+        EXPECT_NO_THROW(EXPECT_EQ(PvInstrumentPanelDocument::LoadFromFile(fileInfo, pviDoc), true));
+        EXPECT_EQ(pviDoc.GetDocument().empty(), false);
+    }
+    ASSERT_NO_THROW(pvPfShutdown());
+}
+
+TEST(PvInstrumentPanelDocumentTests, PvInstrumentPanelDocument_Create_utf16_crlf_signature_default_correct)
+{
+    ASSERT_NO_THROW(pvPfInitialize(ApplicationInstance));
+    {
+        PvInstrumentPanelDocument pviDoc;
+        PvPfFileInfo fileInfo;
+
+        ASSERT_NO_THROW(ASSERT_EQ(pvPfIoOpen(u8"..\\..\\..\\testing\\data\\panel_utf16_crlf_signature_default.txt", fileInfo), true));
+        ASSERT_NO_THROW(ASSERT_EQ(pvPfIoRead(fileInfo), true));
+        EXPECT_NO_THROW(EXPECT_EQ(PvInstrumentPanelDocument::LoadFromFile(fileInfo, pviDoc), true));
+        EXPECT_EQ(pviDoc.GetDocument().empty(), false);
+    }
+    ASSERT_NO_THROW(pvPfShutdown());
+}
+
+TEST(PvInstrumentPanelDocumentTests, PvInstrumentPanelDocument_Create_utf16_crlf_signature_v1_correct)
+{
+    ASSERT_NO_THROW(pvPfInitialize(ApplicationInstance));
+    {
+        PvInstrumentPanelDocument pviDoc;
+        PvPfFileInfo fileInfo;
+
+        ASSERT_NO_THROW(ASSERT_EQ(pvPfIoOpen(u8"..\\..\\..\\testing\\data\\panel_utf16_crlf_signature_v1.txt", fileInfo), true));
+        ASSERT_NO_THROW(ASSERT_EQ(pvPfIoRead(fileInfo), true));
+        EXPECT_NO_THROW(EXPECT_EQ(PvInstrumentPanelDocument::LoadFromFile(fileInfo, pviDoc), true));
+        EXPECT_EQ(pviDoc.GetDocument().empty(), false);
+    }
+    ASSERT_NO_THROW(pvPfShutdown());
+}
+
+TEST(PvInstrumentPanelDocumentTests, PvInstrumentPanelDocument_Create_utf8_crlf_signature_v1_correct)
+{
+    ASSERT_NO_THROW(pvPfInitialize(ApplicationInstance));
+    {
+        PvInstrumentPanelDocument pviDoc;
+        PvPfFileInfo fileInfo;
+
+        ASSERT_NO_THROW(ASSERT_EQ(pvPfIoOpen(u8"..\\..\\..\\testing\\data\\panel_utf8_crlf_signature_v1.txt", fileInfo), true));
+        ASSERT_NO_THROW(ASSERT_EQ(pvPfIoRead(fileInfo), true));
+        EXPECT_NO_THROW(EXPECT_EQ(PvInstrumentPanelDocument::LoadFromFile(fileInfo, pviDoc), true));
+        EXPECT_EQ(pviDoc.GetDocument().empty(), false);
+    }
+    ASSERT_NO_THROW(pvPfShutdown());
+}
+
+TEST(PvInstrumentPanelDocumentTests, PvInstrumentPanelDocument_Create_utf16be_crlf_signature_sjis_correct)
+{
+    ASSERT_NO_THROW(pvPfInitialize(ApplicationInstance));
+    {
+        PvInstrumentPanelDocument pviDoc;
+        PvPfFileInfo fileInfo;
+
+        ASSERT_NO_THROW(ASSERT_EQ(pvPfIoOpen(u8"..\\..\\..\\testing\\data\\panel_utf16be_crlf_signature_sjis.txt", fileInfo), true));
+        ASSERT_NO_THROW(ASSERT_EQ(pvPfIoRead(fileInfo), true));
+        EXPECT_NO_THROW(EXPECT_EQ(PvInstrumentPanelDocument::LoadFromFile(fileInfo, pviDoc), true));
+        EXPECT_EQ(pviDoc.GetDocument().empty(), false);
+    }
+    ASSERT_NO_THROW(pvPfShutdown());
+}
+
+TEST(PvInstrumentPanelDocumentTests, PvInstrumentPanelDocument_Create_utf16_crlf_signature_sjis_correct)
+{
+    ASSERT_NO_THROW(pvPfInitialize(ApplicationInstance));
+    {
+        PvInstrumentPanelDocument pviDoc;
+        PvPfFileInfo fileInfo;
+
+        ASSERT_NO_THROW(ASSERT_EQ(pvPfIoOpen(u8"..\\..\\..\\testing\\data\\panel_utf16_crlf_signature_sjis.txt", fileInfo), true));
+        ASSERT_NO_THROW(ASSERT_EQ(pvPfIoRead(fileInfo), true));
+        EXPECT_NO_THROW(EXPECT_EQ(PvInstrumentPanelDocument::LoadFromFile(fileInfo, pviDoc), true));
+        EXPECT_EQ(pviDoc.GetDocument().empty(), false);
+    }
+    ASSERT_NO_THROW(pvPfShutdown());
+}
