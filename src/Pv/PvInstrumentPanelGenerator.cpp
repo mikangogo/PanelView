@@ -85,7 +85,7 @@ namespace
 
         if (pvPfIoRead(fileInfo))
         {
-            auto newTexture = pvGrGenerateTextureFromFile(grContext, fileInfo);
+            auto newTexture = pvGrGenerateTextureFromFile(grContext, fileInfo, component.GetTransparentColor());
             component.SetTexture(newTexture, usage);
             workData.RegisterTextureToCache(newTexture, fileInfo.GetPath());
         }
@@ -108,6 +108,8 @@ namespace
             thisObject.SetTopMax(thisNode.Top.Value);
             thisObject.SetRightMax(thisNode.Right.Value);
             thisObject.SetBottomMax(thisNode.Bottom.Value);
+            thisObject.SetTransparentColor(thisNode.TransparentColor.A, thisNode.TransparentColor.R, 
+                                           thisNode.TransparentColor.G, thisNode.TransparentColor.B);
             thisObject.SetCenter({thisNode.Center.Value[0], thisNode.Center.Value[1]});
             thisObject.SetOrigin({thisNode.Origin.Value[0], thisNode.Origin.Value[1]});
             thisObject.SetPerspective(thisNode.Perspective.Value);
