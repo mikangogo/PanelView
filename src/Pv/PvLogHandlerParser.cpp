@@ -9,6 +9,7 @@ namespace
         "[Info]",
         "Invalid encoding",
         "Encoding is not supported",
+        "Encoding mismatch",
         "Broken header",
         "Encoding conversion is failed",
         "Invalid version",

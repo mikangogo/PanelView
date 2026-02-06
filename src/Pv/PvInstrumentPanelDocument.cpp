@@ -347,17 +347,37 @@ namespace
             // Detect the encoding from specifier in header.
             codePage = headerInfo.CodePage;
 
-            if (codePage == pvPfCccGetCodePageFromName(u8"utf-8"))
+            // Try converting the document to UTF-16 with the specified encoding for checking consistency.
+            if (!pvPfCccMultiByteToUtf16(nullptr, 0, sourceDataWithoutBom, sourceDataWithoutBomBytes, codePage))
             {
-                // The specifier indicates UTF-8 or empty.
+                if (!pvPfCccUtf8ToUtf16(nullptr, 0, reinterpret_cast<const char8_t*>(sourceDataWithoutBom), sourceDataWithoutBomBytes))
+                {
+                    // Specified encoding and document encoding (without UTF-8) are inconsistent.
+
+                    logger.PrintParseHeaderMessage(PvLogHandlerParser::HeaderReason_EncodingMismatch, std::format("Header specified encoding is CP{:d}, but the document encoding is different.", codePage));
+                    return false;
+                }
+
+
+                // The document is UTF-8, but the specifier indicates other encoding.
+
                 unicodeEncoding = PvDocumentUnicodeEncoding_Utf8;
-                logger.PrintParseHeaderMessage(PvLogHandlerParser::HeaderReason_Information, u8"Use specified encoding: UTF-8");
+                codePage = pvPfCccGetCodePageFromName(u8"utf-8");
             }
             else
             {
-                // Other encoding is indicated.
-                // Probably multi-bytes encoding.
-                logger.PrintParseHeaderMessage(PvLogHandlerParser::HeaderReason_Information, std::format("Use specified encoding: CP{:d}", codePage));
+                if (codePage == pvPfCccGetCodePageFromName(u8"utf-8"))
+                {
+                    // The specifier indicates UTF-8 or empty.
+                    unicodeEncoding = PvDocumentUnicodeEncoding_Utf8;
+                    logger.PrintParseHeaderMessage(PvLogHandlerParser::HeaderReason_Information, u8"Use specified encoding: UTF-8");
+                }
+                else
+                {
+                    // Other encoding is indicated.
+                    // Probably multi-bytes encoding.
+                    logger.PrintParseHeaderMessage(PvLogHandlerParser::HeaderReason_Information, std::format("Use specified encoding: CP{:d}", codePage));
+                }
             }
 
             stride = sizeof(char);
