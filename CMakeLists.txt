@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 4.2.3)
 
 set(BVETS_LIBRARY_NAME "PanelView")
+set(BVETS_LIBRARY_THIRDPARTY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/thirdParty/")
 
 project(${BVETS_LIBRARY_NAME})
 
@@ -101,6 +102,18 @@ configure_file(
 )
 
 if (PV_TESTING)
+    # Enable testing
     enable_testing()
+
+    # Configure Google Test
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+    add_subdirectory(${BVETS_LIBRARY_THIRDPARTY_DIR}/googletest)
+    target_compile_features(
+      gtest
+      PRIVATE
+      cxx_std_20
+    )
+
+    # Add testing suites
     add_subdirectory(testing)
 endif()

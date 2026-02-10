@@ -2,18 +2,6 @@ cmake_minimum_required(VERSION 4.2.3)
 
 set(PV_TESTING_NAME pvlib_test)
 
-# Google Testの取得
-include(FetchContent)
-
-FetchContent_Declare(
-  googletest
-  URL https://github.com/google/googletest/archive/refs/tags/release-1.12.1.zip
-)
-# Google Testのビルド
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(googletest)
-
-# テストの追加
 add_executable(
     ${PV_TESTING_NAME}
 )
@@ -45,7 +33,7 @@ target_link_libraries(${PV_TESTING_NAME}
     gtest
 )
 
-# CTestと連携
+# Register the testing suites to CTest
 add_test(
     NAME
     MyTest
