@@ -1,34 +1,7 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 4.2.3)
 
 set(PV_LIB_NAME pvlib)
 add_library(${PV_LIB_NAME} STATIC)
-
-target_compile_options(${PV_LIB_NAME} PRIVATE
-"$<$<CONFIG:Debug>:/MDd>"
-"$<$<CONFIG:Release>:/MD>"
-)
-
-target_compile_definitions(${PV_LIB_NAME} PRIVATE UNICODE _UNICODE)
-
-if("${PV_ARCH}" STREQUAL "x64")
-    target_compile_definitions(${PV_LIB_NAME} PRIVATE _PV_ARCH_AMD64)
-elseif("${PV_ARCH}" STREQUAL "x86")
-    target_compile_definitions(${PV_LIB_NAME} PRIVATE _PV_ARCH_X86)
-endif()
-
-if(PV_DEBUG)
-    target_compile_definitions(${PV_LIB_NAME} PRIVATE _PV_OPEN_DEBUG_CONSOLE)
-endif()
-
-if(PV_DEVELOPMENT)
-    target_compile_definitions(${PV_LIB_NAME} PRIVATE _PV_DEVELOPMENT_BUILD)
-endif()
-
-set_target_properties(${PV_LIB_NAME} PROPERTIES
-    CXX_STANDARD 20
-    CXX_STANDARD_REQUIRED ON
-    CXX_EXTENSIONS ON
-)
 
 target_sources(${PV_LIB_NAME}
     PRIVATE
@@ -96,4 +69,10 @@ target_include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR} 
     $ENV{DXSDK_DIR}/Include
     ${CMAKE_SOURCE_DIR}/thirdParty/toml11/single_include
+)
+
+target_link_libraries(
+    ${PV_LIB_NAME}
+    PRIVATE 
+    BVETS_LIBRARY_OPTIONS
 )
