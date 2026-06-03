@@ -7,6 +7,8 @@
 
 !/Logo.jpg
 
+!/.editorconfig
+
 !/*.txt
 !/*.md
 !/Build.*

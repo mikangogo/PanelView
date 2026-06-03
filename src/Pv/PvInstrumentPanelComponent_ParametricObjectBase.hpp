@@ -188,15 +188,15 @@ protected:
 
             case PvInstrumentPanelSubjectKeyTitle_Hour:
                 {
-                    constexpr auto div = 1000 * 3600;
-                    const auto value = updateInfo.Time / div;
+                    constexpr auto div = 1000.0 * 3600.0;
+                    const auto value = static_cast<double>(updateInfo.Time) / div;
                     SetParameter(value);
                 }
                 break;
             case PvInstrumentPanelSubjectKeyTitle_Min:
                 {
-                    constexpr auto div = 1000 * 60;
-                    const auto value = updateInfo.Time / div;
+                    constexpr auto div = 1000.0 * 60.0;
+                    const auto value = static_cast<double>(updateInfo.Time) / div;
                     SetParameter(value);
                 }
                 break;

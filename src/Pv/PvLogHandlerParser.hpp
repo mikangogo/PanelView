@@ -12,6 +12,7 @@ public:
         HeaderReason_Information = 0,
         HeaderReason_InvalidEncoding,
         HeaderReason_NoSupportedEncoding,
+        HeaderReason_EncodingMismatch,
         HeaderReason_BrokenHeader,
         HeaderReason_FailedEncodingConversion,
         HeaderReason_InvalidVersion,
